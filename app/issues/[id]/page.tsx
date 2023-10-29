@@ -1,5 +1,6 @@
+import IssueStatBadge from '@/app/component/IssueStatBadge';
 import prisma from '@/prisma/client'
-import { Heading } from '@radix-ui/themes';
+import { Card, Flex, Heading, Text } from '@radix-ui/themes';
 import { notFound } from 'next/navigation';
 import React from 'react'
 
@@ -19,9 +20,14 @@ const IssueDetPage = async ({ params }: Props) => {
     return (
         <div>
             <Heading as='h1'>Detail Issue : {issuedet.title}</Heading>
-            <p>{issuedet.description}</p>
-            <p>{issuedet.createAt.toLocaleString()}</p>
-            <p>{issuedet.updateAt.toLocaleString()}</p>
+            <Flex className='space-x-3' my='2'>
+                <IssueStatBadge stat={issuedet.status} />
+                <Text>{issuedet.createAt.toLocaleString()}</Text>
+                <Text> /  LU : {issuedet.updateAt.toLocaleString()}</Text>
+            </Flex>
+            <Card className='max-w-xl'>
+                <p>{issuedet.description}</p>
+            </Card>
         </div>
     )
 }
