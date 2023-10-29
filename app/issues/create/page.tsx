@@ -1,21 +1,24 @@
 'use client';
 import React, { useState } from 'react';
-import { Button, Callout, TextField } from '@radix-ui/themes';
+import { Button, Callout, Text, TextField } from '@radix-ui/themes';
 import SimpleMDE from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
 import { Controller, Form, useForm } from 'react-hook-form';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { issueRule } from '@/app/rule/issueRule';
+import { z } from 'zod';
+import ErrorMsg from '@/app/component/ErrorMsg';
 
-interface IssueForm {
-    title: string,
-    description: string,
-}
+type IssueForm = z.infer<typeof issueRule>;
 
 const CreateIssue = () => {
 
 const router = useRouter();
-const { register, control, handleSubmit } = useForm<IssueForm>();
+const { register, control, handleSubmit, formState: { errors } } = useForm<IssueForm>({
+    resolver: zodResolver(issueRule)
+});
 const [error, setError] = useState('');
 
   return (
@@ -41,6 +44,8 @@ const [error, setError] = useState('');
             <TextField.Root>
                 <TextField.Input placeholder='Title' {...register('title')}/>
             </TextField.Root>
+            <ErrorMsg>{errors.title?.message}</ErrorMsg> 
+            {/* // megarah ke component/ErrorMsg */}
 
             <Controller 
                 // karena extension (SimpleMDE) maka pakai controller
@@ -48,6 +53,7 @@ const [error, setError] = useState('');
                 control={control}
                 render={({ field }) => <SimpleMDE placeholder='Description' {...field}/>}
             />
+            <ErrorMsg>{errors.description?.message}</ErrorMsg>
 
             <Button>Submit New Issue</Button>
         </form>
