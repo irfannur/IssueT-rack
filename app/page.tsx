@@ -1,7 +1,8 @@
+import { Heading } from '@radix-ui/themes'
 import Image from 'next/image'
 
 export default function Home() {
   return (
-    <main><h1>Hello</h1></main>
+    <main><Heading as='h1'>Hello</Heading></main>
   )
 }
