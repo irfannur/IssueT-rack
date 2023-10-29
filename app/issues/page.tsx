@@ -3,7 +3,6 @@ import { IconButton, Table } from '@radix-ui/themes';
 import prisma from '@/prisma/client';
 import IssueStatBadge from '../component/IssueStatBadge';
 import IssueAct from './IssueAct';
-import delay from 'delay';
 import Link from 'next/link';
 import { MagnifyingGlassIcon, Pencil2Icon } from '@radix-ui/react-icons';
 
@@ -11,7 +10,6 @@ const IssuesPage = async () => {
   const getDataIssues = await prisma.issue.findMany({
     orderBy: { createAt: 'desc' }
   });
-  await delay(2000);
 
   return (
     <div>
