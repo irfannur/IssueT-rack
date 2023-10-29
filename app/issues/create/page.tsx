@@ -1,7 +1,6 @@
 'use client';
 import React, { useState } from 'react';
 import { Button, Callout, Text, TextField } from '@radix-ui/themes';
-import SimpleMDE from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
 import { Controller, Form, useForm } from 'react-hook-form';
 import axios from 'axios';
@@ -11,6 +10,7 @@ import { issueRule } from '@/app/rule/issueRule';
 import { z } from 'zod';
 import ErrorMsg from '@/app/component/ErrorMsg';
 import Spinner from '@/app/component/Spinner';
+import dynamic from 'next/dynamic';
 
 type IssueForm = z.infer<typeof issueRule>;
 
@@ -31,6 +31,10 @@ const doSubmit = handleSubmit( async (data) => {
         setError('An unexpected error occurred.');
     }
 })
+
+const SimpleMDE = dynamic(() => import('react-simplemde-editor'), {
+    ssr: false,
+});
 
   return (
       <div className='max-w-xl'>
