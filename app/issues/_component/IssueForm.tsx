@@ -11,6 +11,7 @@ import { z } from 'zod';
 import ErrorMsg from '@/app/component/ErrorMsg';
 import Spinner from '@/app/component/Spinner';
 import dynamic from 'next/dynamic';
+import { Issue } from '@prisma/client';
 
 type IssueFormData = z.infer<typeof issueRule>;
 
@@ -22,9 +23,15 @@ const IssueForm = ({ issue }: { issue?: Issue } ) => {
     const [error, setError] = useState('');
     const [isSubmitting, setSubmitting] = useState(false);
     const doSubmit = handleSubmit(async (data) => {
+        console.log(data);
         try {
             setSubmitting(true);
-            await axios.post('/api/issues', data);
+            if (issue) { 
+                await axios.patch('/api/issues/' + issue.id, data);
+            } else {
+                await axios.post('/api/issues', data);
+            }
+
             router.push('/issues');
         } catch (error) {
             setSubmitting(false);
@@ -50,7 +57,7 @@ const IssueForm = ({ issue }: { issue?: Issue } ) => {
                 onSubmit={doSubmit} >
 
                 <TextField.Root>
-                    <TextField.Input placeholder='Title' {...register('title')} />
+                    <TextField.Input defaultValue={issue?.title} placeholder='Title' {...register('title')} />
                 </TextField.Root>
                 <ErrorMsg>{errors.title?.message}</ErrorMsg>
                 {/* // megarah ke component/ErrorMsg */}
@@ -58,12 +65,15 @@ const IssueForm = ({ issue }: { issue?: Issue } ) => {
                 <Controller
                     // karena extension (SimpleMDE) maka pakai controller
                     name="description"
+                    defaultValue={issue?.description}
                     control={control}
                     render={({ field }) => <SimpleMDE placeholder='Description' {...field} />}
                 />
                 <ErrorMsg>{errors.description?.message}</ErrorMsg>
 
-                <Button disabled={isSubmitting}>Submit New Issue {isSubmitting && <Spinner />}</Button>
+                <Button disabled={isSubmitting}>
+                    {issue ? 'Edit Issue' : 'Submit New Issue'} 
+                    {isSubmitting && <Spinner />}</Button>
             </form>
         </div>
     )
