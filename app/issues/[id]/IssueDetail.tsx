@@ -19,4 +19,5 @@ const IssueDetail = ({ issuedet }: { issuedet: Issue }) => {
     );
 };
 
+export const dynamic = 'force-dynamic';
 export default IssueDetail;
