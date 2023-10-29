@@ -1,8 +1,8 @@
 import React from 'react'
-import { Button, IconButton, Table } from '@radix-ui/themes';
+import { IconButton, Table } from '@radix-ui/themes';
 import prisma from '@/prisma/client';
 import IssueStatBadge from '../component/IssueStatBadge';
-import IssueAct from './issueAct';
+import IssueAct from './IssueAct';
 import delay from 'delay';
 import Link from 'next/link';
 import { MagnifyingGlassIcon, Pencil2Icon } from '@radix-ui/react-icons';
@@ -32,7 +32,7 @@ const IssuesPage = async () => {
             getDataIssues.map((perIssue, i) => (
               <Table.Row key={perIssue.id}>
                 <Table.Cell>{i++ + 1}</Table.Cell>
-                <Table.Cell>{perIssue.title}<div className='block md:hidden'><IssueStatBadge stat={perIssue.status}/></div></Table.Cell>
+                <Table.Cell><Link href={`/issues/${perIssue.id}`}>{perIssue.title}</Link> <div className='block md:hidden'><IssueStatBadge stat={perIssue.status}/></div></Table.Cell>
                 <Table.Cell className='hidden md:table-cell'><IssueStatBadge stat={perIssue.status} /></Table.Cell>
                 <Table.Cell className='hidden md:table-cell'>{perIssue.createAt.toLocaleString()}</Table.Cell>
                 <Table.Cell className='space-x-1'>
