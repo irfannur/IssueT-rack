@@ -10,6 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { issueRule } from '@/app/rule/issueRule';
 import { z } from 'zod';
 import ErrorMsg from '@/app/component/ErrorMsg';
+import Spinner from '@/app/component/Spinner';
 
 type IssueForm = z.infer<typeof issueRule>;
 
@@ -20,6 +21,7 @@ const { register, control, handleSubmit, formState: { errors } } = useForm<Issue
     resolver: zodResolver(issueRule)
 });
 const [error, setError] = useState('');
+const [isSubmitting, setSubmitting] = useState(false);
 
   return (
       <div className='max-w-xl'>
@@ -34,11 +36,13 @@ const [error, setError] = useState('');
         className='space-y-3' 
         onSubmit = {handleSubmit( async (data) => {
             try {
+                setSubmitting(true);
                 await axios.post('/api/issues', data);
-                    router.push('/issues');
-                } catch (error) {
-                    setError('An unexpected error occurred.');
-                }
+                router.push('/issues');
+            } catch (error) {
+                setSubmitting(false);
+                setError('An unexpected error occurred.');
+            }
         })} >
 
             <TextField.Root>
@@ -55,7 +59,7 @@ const [error, setError] = useState('');
             />
             <ErrorMsg>{errors.description?.message}</ErrorMsg>
 
-            <Button>Submit New Issue</Button>
+            <Button disabled={isSubmitting}>Submit New Issue {isSubmitting && <Spinner />}</Button>
         </form>
     </div>
   )
