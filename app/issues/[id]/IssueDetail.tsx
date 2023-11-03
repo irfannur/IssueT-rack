@@ -12,7 +12,7 @@ const IssueDetail = ({ issuedet }: { issuedet: Issue }) => {
                 <Text>{issuedet.createAt.toLocaleString()}</Text>
                 <Text> /  LU : {issuedet.updateAt.toLocaleString()}</Text>
             </Flex>
-            <Card className='prose' mt='4'>
+            <Card className='prose max-w-full' mt='4'>
                 <ReactMarkdown>{issuedet.description}</ReactMarkdown>
             </Card>
         </>

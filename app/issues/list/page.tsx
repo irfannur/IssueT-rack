@@ -1,7 +1,7 @@
 import React from 'react'
 import { IconButton, Table } from '@radix-ui/themes';
 import prisma from '@/prisma/client';
-import IssueStatBadge from '../component/IssueStatBadge';
+import IssueStatBadge from '../../component/IssueStatBadge';
 import IssueAct from './IssueAct';
 import Link from 'next/link';
 import { MagnifyingGlassIcon, Pencil2Icon } from '@radix-ui/react-icons';
@@ -34,7 +34,7 @@ const IssuesPage = async () => {
                 <Table.Cell className='hidden md:table-cell'><IssueStatBadge stat={perIssue.status} /></Table.Cell>
                 <Table.Cell className='hidden md:table-cell'>{perIssue.createAt.toLocaleString()}</Table.Cell>
                 <Table.Cell className='space-x-1'>
-                  <IconButton variant='solid'><Link href={`/issues/${perIssue.id}/edit`}><Pencil2Icon /></Link></IconButton>
+                  <IconButton variant='solid'><Link href={`/issues/edit/${perIssue.id}`}><Pencil2Icon /></Link></IconButton>
                   <IconButton variant='solid' color='blue'><Link href={`/issues/${perIssue.id}`}><MagnifyingGlassIcon /></Link></IconButton>
                 </Table.Cell>
               </Table.Row>

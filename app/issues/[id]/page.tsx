@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import React from 'react'
 import IssueDetail from './IssueDetail';
 import EditIssueButton from './EditIssueButton';
+import DeleteIssueButton from './DeleteIssueButton';
 
 interface Props {
     params: { id: string }
@@ -19,12 +20,15 @@ const IssueDetPage = async ({ params }: Props) => {
     }
 
     return (
-        <Grid columns={{ initial: "1", md: "2" }} gap="5">
-            <Box>
+        <Grid columns={{ initial: "1", md: "5" }} gap="5">
+            <Box className='md:col-span-4'>
                 <IssueDetail issuedet={issuedet}/>
             </Box>
             <Box>
-                <EditIssueButton issueId={issuedet.id}/>
+                <Flex direction="column" gap="4">
+                    <EditIssueButton issueId={issuedet.id}/>
+                    <DeleteIssueButton issueId={issuedet.id}/>
+                </Flex>
             </Box>
         </Grid>
     )
