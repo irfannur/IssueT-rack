@@ -14,6 +14,7 @@ import {
   Flex,
   Text,
 } from "@radix-ui/themes";
+import { Skeleton } from "@/app/component/";
 
 const NavBar = () => {
   return (
@@ -63,10 +64,14 @@ const NavLinks = () => {
 const AuthStatus = () => {
   const { status, data: session } = useSession();
 
-  if (status === "loading") return null;
+  if (status === "loading") return <Skeleton width="3rem" />;
 
   if (status === "unauthenticated")
-    return <Link className="nav-link" href="/api/auth/signin">Login</Link>;
+    return (
+      <Link className="nav-link" href="/api/auth/signin">
+        Login
+      </Link>
+    );
 
   return (
     <Box>
@@ -78,6 +83,7 @@ const AuthStatus = () => {
             size="2"
             radius="full"
             className="cursor-pointer"
+            referrerPolicy="no-referrer"
           />
         </DropdownMenu.Trigger>
         <DropdownMenu.Content>
