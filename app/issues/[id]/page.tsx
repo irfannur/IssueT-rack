@@ -37,7 +37,7 @@ console.log(session);
             {session && (
                 <Box>
                     <Flex direction="column" gap="4">
-                        <AssigneeSelect />
+                        <AssigneeSelect issue={issuedet}/>
                         <EditIssueButton issueId={issuedet.id} />
                         <DeleteIssueButton issueId={issuedet.id} />
                     </Flex>

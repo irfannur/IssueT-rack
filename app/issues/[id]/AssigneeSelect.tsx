@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import { User } from '@prisma/client';
+import { Issue, User } from '@prisma/client';
 import { Select } from '@radix-ui/themes'
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import Skeleton from '../../component/Skeleton';
 
-const AssigneeSelect = () => {
+const AssigneeSelect = ({ issue }: { issue: Issue }) => {
 
     const { data: users, isLoading, error } = useQuery<User[]>({
-        queryKey: ['users'], 
-        queryFn: () => axios.get('/api/users').then(res => res.data), 
+        queryKey: ['users'],
+        queryFn: () => axios.get('/api/users').then(res => res.data),
         staleTime: 60 * 1000, //60 detik
         retry: 3
     });
@@ -21,13 +21,27 @@ const AssigneeSelect = () => {
     if (error) return null;
 
     return (
-        <Select.Root>
+        <Select.Root
+            defaultValue={issue.assignedToUserId || ""}
+            onValueChange={ //onChange
+                (userId) => {
+                    axios.patch("/api/issues/" + issue.id + "/yes", {
+                        assignedToUserId: userId === "unassigned" ? null : userId,
+                    })
+                }
+            }
+        >
             <Select.Trigger placeholder='Assign...' />
             <Select.Content>
                 <Select.Group>
                     <Select.Label>Suggestions</Select.Label>
-                    {users?.map(user => (
-                        <Select.Item key={user.id} value={user.id}>{user.name}</Select.Item>)
+                    <Select.Item value="unassigned">Unassigned</Select.Item>
+                    {users?.map(
+                        (user) => (
+                            <Select.Item key={user.id} value={user.id}>
+                                {user.name}
+                            </Select.Item>
+                        )
                     )}
                 </Select.Group>
             </Select.Content>
@@ -35,4 +49,4 @@ const AssigneeSelect = () => {
     )
 }
 
-export default AssigneeSelect
+export default AssigneeSelect;
